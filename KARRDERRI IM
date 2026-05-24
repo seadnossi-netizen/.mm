@@ -1,0 +1,27 @@
+name: Build .dylib
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Compile .dylib
+        run: |
+          clang++ -dynamiclib \
+            -framework Foundation \
+            -o aimkill.dylib \
+            aimkill.mm
+
+      - name: Upload .dylib
+        uses: actions/upload-artifact@v4
+        with:
+          name: aimkill
+          path: aimkill.dylib
